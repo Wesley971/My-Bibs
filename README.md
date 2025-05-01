@@ -73,4 +73,4 @@ MonAppliBiberon/
 
 ## ✍️ Auteur
 
-Développé avec ❤️ par [Ton Prénom ou Pseudo]
+Développé avec ❤️ par Wesley
