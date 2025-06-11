@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Sauvegarder un biberon avec date et heure
-export const saveBottle = async (quantity: string) => {
+export const saveBottle = async (quantity: string, date: Date, notes?: string) => {
   try {
     if (!quantity || isNaN(Number(quantity))) {
       console.error("Quantité invalide :", quantity);
@@ -12,7 +12,8 @@ export const saveBottle = async (quantity: string) => {
     const newBottle = {
       id: Date.now(),
       quantity: Number(quantity),
-      timestamp: new Date().toISOString(), // ⏰ Stocker la date et l'heure
+      timestamp: date.toISOString(),
+      notes: notes || "",
     };
     bottles.push(newBottle);
     
@@ -24,7 +25,7 @@ export const saveBottle = async (quantity: string) => {
 };
 
 // Récupérer tous les biberons
-export const getBottles = async (): Promise<{ id: number; quantity: number; timestamp: string }[]> => {
+export const getBottles = async (): Promise<{ id: number; quantity: number; timestamp: string; notes: string }[]> => {
   try {
     const bottles = await AsyncStorage.getItem("bottles");
     return bottles ? JSON.parse(bottles) : [];

@@ -16,7 +16,7 @@ const formatDate = (isoString: string) => {
 };
 
 const HistoryScreen: React.FC<HistoryScreenProps> = ({ navigation }) => {
-  const [bottles, setBottles] = useState<{ id: number; quantity: number; timestamp: string }[]>([]);
+  const [bottles, setBottles] = useState<{ id: number; quantity: number; timestamp: string; notes: string }[]>([]);
 
   useEffect(() => {
     loadBottles();
@@ -44,13 +44,19 @@ const HistoryScreen: React.FC<HistoryScreenProps> = ({ navigation }) => {
               <List.Item
                 key={bottle.id}
                 title={`Biberon de ${bottle.quantity} ml`}
-                description={`Le ${formatDate(bottle.timestamp)}`} // 📅 Affichage formaté
+                description={
+                  <>
+                    <Text>Le {formatDate(bottle.timestamp)}</Text>
+                    {bottle.notes && (
+                      <Text style={styles.notes}>📝 {bottle.notes}</Text>
+                    )}
+                  </>
+                }
                 left={(props) => <List.Icon {...props} icon="baby-bottle-outline" />}
                 right={(props) => (
                   <IconButton
                     {...props}
                     icon="trash-can-outline"
-                    
                     onPress={() => handleDeleteBottle(bottle.id)}
                   />
                 )}
@@ -67,9 +73,27 @@ const HistoryScreen: React.FC<HistoryScreenProps> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#FFF0F5", padding: 20 },
-  card: { width: "100%", backgroundColor: "#FFFFFF" },
-  button: { marginTop: 10, backgroundColor: "#FADADD" },
+  container: { 
+    flex: 1, 
+    justifyContent: "center", 
+    alignItems: "center", 
+    backgroundColor: "#FFF0F5", 
+    padding: 20 
+  },
+  card: { 
+    width: "100%", 
+    backgroundColor: "#FFFFFF",
+    elevation: 4,
+  },
+  button: { 
+    marginTop: 10, 
+    backgroundColor: "#FADADD" 
+  },
+  notes: {
+    marginTop: 4,
+    fontStyle: "italic",
+    color: "#666",
+  },
 });
 
 export default HistoryScreen;
