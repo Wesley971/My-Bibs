@@ -17,10 +17,8 @@ const theme = {
 export default function App() {
   return (
     <PaperProvider theme={theme}>
-      <SafeAreaView style={{ flex: 1 }}>
         <StatusBar barStyle="dark-content" />
         <AppNavigator />
-      </SafeAreaView>
     </PaperProvider>
   );
 }
