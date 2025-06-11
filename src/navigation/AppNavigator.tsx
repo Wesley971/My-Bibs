@@ -13,15 +13,15 @@ export type RootStackParamList = {
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
-<Stack.Screen name="Ajout" component={AddBottleScreen} options={{ title: "Ajouter un Biberon" }} />
+
 
 const AppNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-      <Stack.Screen name="Ajout" component={AddBottleScreen} options={{ title: "My Bibs" }} />
-        <Stack.Screen name="Historique" component={HistoryScreen} options={{ title: "Historique" }} />
-        <Stack.Screen name="Statistiques" component={StatsScreen} options={{ title: "Statistiques" }} />
+      <Stack.Screen name="Ajout" component={AddBottleScreen} options={{ title: "My Bibs", headerShown: false }} />
+        <Stack.Screen name="Historique" component={HistoryScreen} options={{ title: "Historique", headerShown: false }} />
+        <Stack.Screen name="Statistiques" component={StatsScreen} options={{ title: "Statistiques", headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
