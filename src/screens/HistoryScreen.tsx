@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, FlatList, View, Alert } from "react-native";
-import { List, IconButton, Text, useTheme } from "react-native-paper";
+import { List, IconButton, Text } from "react-native-paper";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../navigation/AppNavigator";
 import { getBottles, deleteBottle } from "../storage/bottleStorage";
@@ -23,8 +23,7 @@ const formatDate = (isoString: string) => {
   return date.toLocaleString(); // 📅 Format lisible selon la langue du téléphone
 };
 
-const HistoryScreen: React.FC<HistoryScreenProps> = ({ navigation }) => {
-  const theme = useTheme();
+const HistoryScreen: React.FC<HistoryScreenProps> = () => {
   const [bottles, setBottles] = useState<Bottle[]>([]);
 
   useEffect(() => {

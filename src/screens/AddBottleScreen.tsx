@@ -92,7 +92,7 @@ const AddBottleScreen: React.FC<AddBottleScreenProps> = ({ navigation }) => {
         visible={snackbarVisible}
         onDismiss={() => setSnackbarVisible(false)}
         duration={3000}
-        style={[styles.snackbar, getSnackbarStyle()]}
+        style={getSnackbarStyle()}
       >
         {snackbarMessage}
       </Snackbar>
@@ -123,9 +123,6 @@ const styles = StyleSheet.create({
   },
   dateButton: {
     borderColor: "#FADADD",
-  },
-  snackbar: {
-    marginBottom: 20,
   },
 });
 
