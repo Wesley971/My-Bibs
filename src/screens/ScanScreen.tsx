@@ -1,55 +1,50 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Button, Alert } from 'react-native';
-import {
-  CameraView,
-  useCameraPermissions,
-  BarcodeScanningResult,
-} from 'expo-camera';
+import { CameraView, useCameraPermissions } from 'expo-camera';
 
 export default function ScanScreen() {
-  const [permission, requestPermission] = useCameraPermissions();
-  const [scanned, setScanned] = useState(false);
-  const [code, setCode] = useState<string | null>(null);
+  const [hasPermission, requestPermission] = useCameraPermissions();
+  const [scannedData, setScannedData] = useState<string | null>(null);
+  const [scanning, setScanning] = useState(true);
 
   useEffect(() => {
-    if (!permission?.granted) {
+    if (!hasPermission?.granted) {
       requestPermission();
     }
   }, []);
 
-  const handleScan = (data: BarcodeScanningResult) => {
-    if (!scanned && data?.data) {
-      setScanned(true);
-      setCode(data.data);
-      Alert.alert('Code scanné', data.data);
-    }
+  const handleBarCodeScanned = ({ data }: { data: string }) => {
+    setScannedData(data);
+    setScanning(false);
+    Alert.alert('Produit scanné', data);
   };
 
-  if (!permission?.granted) {
+  const restartScan = () => {
+    setScannedData(null);
+    setScanning(true);
+  };
+
+  if (!hasPermission?.granted) {
     return (
-      <View style={styles.center}>
-        <Text>Autorisation caméra requise</Text>
-        <Button title="Demander l'autorisation" onPress={requestPermission} />
+      <View style={styles.container}>
+        <Text>Permission caméra requise</Text>
+        <Button title="Autoriser l'accès" onPress={() => requestPermission()} />
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-      <CameraView
-        style={StyleSheet.absoluteFill}
-        onBarcodeScanned={handleScan}
-        barcodeScannerSettings={{
-          barcodeTypes: ['ean13', 'ean8', 'upc_a', 'upc_e'],
-        }}
-      />
-      {scanned && (
-        <View style={styles.overlay}>
-          <Text style={styles.codeText}>Code : {code}</Text>
-          <Button title="Scanner à nouveau" onPress={() => {
-            setScanned(false);
-            setCode(null);
-          }} />
+      {scanning ? (
+        <CameraView
+          onBarcodeScanned={handleBarCodeScanned}
+          style={styles.camera}
+          barcodeScannerSettings={{ barcodeTypes: ['qr', 'ean13', 'ean8', 'upc_a'] }}
+        />
+      ) : (
+        <View style={styles.resultContainer}>
+          <Text style={styles.resultText}>Données scannées : {scannedData}</Text>
+          <Button title="Scanner à nouveau" onPress={restartScan} />
         </View>
       )}
     </View>
@@ -57,19 +52,25 @@ export default function ScanScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
-  center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  overlay: {
-    position: 'absolute',
-    bottom: 40,
-    width: '100%',
+  container: {
+    flex: 1,
+    backgroundColor: '#ffe4ec', // rose pâle
     alignItems: 'center',
+    justifyContent: 'center',
   },
-  codeText: {
+  camera: {
+    flex: 1,
+    width: '100%',
+  },
+  resultContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+  },
+  resultText: {
     fontSize: 18,
-    marginBottom: 10,
-    padding: 8,
-    backgroundColor: 'white',
-    borderRadius: 10,
+    marginBottom: 20,
+    color: '#c2185b',
+    fontWeight: 'bold'
   },
 });
