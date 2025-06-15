@@ -45,6 +45,14 @@ const AppNavigator = () => {
             tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name="chart-bar" color={color} size={size} />
           }} 
         />
+        <Tab.Screen 
+          name="Scan" 
+          component={StatsScreen} 
+          options={{ 
+            title: "Scan", 
+            tabBarIcon: ({ color, size }) => <MaterialCommunityIcons name="barcode-scan" color={color} size={size} />
+          }} 
+        />
       </Tab.Navigator>
     </NavigationContainer>
   );
